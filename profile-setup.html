@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - HerMatchUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-heart"></i>
+                <span>HerMatchUp</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Setup Section -->
+    <section class="profile-setup-section">
+        <div class="setup-container">
+            <div class="setup-header">
+                <h1>Complete Your Profile</h1>
+                <p>Help us find your perfect mentorship matches</p>
+                <div class="progress-indicator">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="setup-progress" style="width: 20%"></div>
+                    </div>
+                    <span class="progress-text">Step <span id="current-step">1</span> of 5</span>
+                </div>
+            </div>
+
+            <div class="setup-form-container">
+                <!-- Step 1: Basic Information -->
+                <div class="setup-step active" id="step-1">
+                    <h2>Basic Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="bio">Tell us about yourself *</label>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Share your background, interests, and what drives you in STEM..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <select id="location" name="location">
+                                <option value="">Select your location</option>
+                                <option value="remote">Remote/Virtual Only</option>
+                                <option value="united-states">United States</option>
+                                <option value="canada">Canada</option>
+                                <option value="united-kingdom">United Kingdom</option>
+                                <option value="germany">Germany</option>
+                                <option value="france">France</option>
+                                <option value="australia">Australia</option>
+                                <option value="india">India</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="japan">Japan</option>
+                                <option value="south-korea">South Korea</option>
+                                <option value="netherlands">Netherlands</option>
+                                <option value="sweden">Sweden</option>
+                                <option value="switzerland">Switzerland</option>
+                                <option value="brazil">Brazil</option>
+                                <option value="mexico">Mexico</option>
+                                <option value="spain">Spain</option>
+                                <option value="italy">Italy</option>
+                                <option value="china">China</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Communication Preferences -->
+                <div class="setup-step" id="step-2">
+                    <h2>Communication Style</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="communication-tone">Communication Tone *</label>
+                            <select id="communication-tone" name="communicationTone" required>
+                                <option value="">Select your preferred tone</option>
+                                <option value="friendly-casual">Friendly & Casual</option>
+                                <option value="professional-formal">Professional & Formal</option>
+                                <option value="supportive-empathetic">Supportive & Empathetic</option>
+                                <option value="direct-straightforward">Direct & Straightforward</option>
+                                <option value="analytical-detailed">Analytical & Detailed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="communication-frequency">Communication Frequency *</label>
+                            <select id="communication-frequency" name="communicationFrequency" required>
+                                <option value="">Select frequency preference</option>
+                                <option value="frequent-checkins">Frequent Check-ins</option>
+                                <option value="occasional-messages">Occasional Messages</option>
+                                <option value="as-needed">As-needed Communication</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-style">Preferred Feedback Style *</label>
+                            <select id="feedback-style" name="feedbackStyle" required>
+                                <option value="">Select feedback style</option>
+                                <option value="gentle-encouragement">Gentle Encouragement</option>
+                                <option value="honest-blunt">Honest & Blunt</option>
+                                <option value="motivational-uplifting">Motivational & Uplifting</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="response-time">Response Time Expectation *</label>
+                            <select id="response-time" name="responseTime" required>
+                                <option value="">Select response expectation</option>
+                                <option value="immediate-replies">Immediate Replies</option>
+                                <option value="patient-flexible">Patient & Flexible Timing</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Personality & Goals -->
+                <div class="setup-step" id="step-3">
+                    <h2>Personality & Goals</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="personality-type">Personality Type (MBTI)</label>
+                            <select id="personality-type" name="personalityType">
+                                <option value="">Select your MBTI type (optional)</option>
+                                <option value="INTJ">INTJ - The Architect</option>
+                                <option value="INTP">INTP - The Thinker</option>
+                                <option value="ENTJ">ENTJ - The Commander</option>
+                                <option value="ENTP">ENTP - The Debater</option>
+                                <option value="INFJ">INFJ - The Advocate</option>
+                                <option value="INFP">INFP - The Mediator</option>
+                                <option value="ENFJ">ENFJ - The Protagonist</option>
+                                <option value="ENFP">ENFP - The Campaigner</option>
+                                <option value="ISTJ">ISTJ - The Logistician</option>
+                                <option value="ISFJ">ISFJ - The Protector</option>
+                                <option value="ESTJ">ESTJ - The Executive</option>
+                                <option value="ESFJ">ESFJ - The Consul</option>
+                                <option value="ISTP">ISTP - The Virtuoso</option>
+                                <option value="ISFP">ISFP - The Adventurer</option>
+                                <option value="ESTP">ESTP - The Entrepreneur</option>
+                                <option value="ESFP">ESFP - The Entertainer</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="career-goals">Career Goals *</label>
+                            <textarea id="career-goals" name="careerGoals" rows="3" placeholder="What are your short-term and long-term career goals?" required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="mentorship-goals">What are you hoping to gain from mentorship? *</label>
+                            <textarea id="mentorship-goals" name="mentorshipGoals" rows="3" placeholder="Describe what kind of guidance and support you're looking for..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Availability & Preferences -->
+                <div class="setup-step" id="step-4">
+                    <h2>Availability & Preferences</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="availability">Availability *</label>
+                            <select id="availability" name="availability" required>
+                                <option value="">Select your availability</option>
+                                <option value="weekday-mornings">Weekday Mornings</option>
+                                <option value="weekday-afternoons">Weekday Afternoons</option>
+                                <option value="weekday-evenings">Weekday Evenings</option>
+                                <option value="weekend-mornings">Weekend Mornings</option>
+                                <option value="weekend-afternoons">Weekend Afternoons</option>
+                                <option value="weekend-evenings">Weekend Evenings</option>
+                                <option value="flexible">Flexible Schedule</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="meeting-frequency">Preferred Meeting Frequency *</label>
+                            <select id="meeting-frequency" name="meetingFrequency" required>
+                                <option value="">Select frequency</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="bi-weekly">Bi-weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="as-needed">As Needed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="communication-medium">Communication Medium Preference *</label>
+                            <select id="communication-medium" name="communicationMedium" required>
+                                <option value="">Select preference</option>
+                                <option value="detailed-messages">Prefers Typing Detailed Messages</option>
+                                <option value="short-texts">Likes Short Quick Texts</option>
+                                <option value="voice-video">Open to Voice Notes or Video Calls</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Areas of Interest -->
+                <div class="setup-step" id="step-5">
+                    <h2>Areas of Interest & Expertise</h2>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>What areas can you help others with? (Select all that apply)</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="career-guidance">
+                                    <span class="checkmark"></span>
+                                    Career Guidance
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="technical-skills">
+                                    <span class="checkmark"></span>
+                                    Technical Skills
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="interview-prep">
+                                    <span class="checkmark"></span>
+                                    Interview Preparation
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="research-guidance">
+                                    <span class="checkmark"></span>
+                                    Research Guidance
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="networking">
+                                    <span class="checkmark"></span>
+                                    Networking
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="canHelp" value="work-life-balance">
+                                    <span class="checkmark"></span>
+                                    Work-Life Balance
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>What areas would you like help with? (Select all that apply)</label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="career-guidance">
+                                    <span class="checkmark"></span>
+                                    Career Guidance
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="technical-skills">
+                                    <span class="checkmark"></span>
+                                    Technical Skills
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="interview-prep">
+                                    <span class="checkmark"></span>
+                                    Interview Preparation
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="research-guidance">
+                                    <span class="checkmark"></span>
+                                    Research Guidance
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="networking">
+                                    <span class="checkmark"></span>
+                                    Networking
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="needHelp" value="work-life-balance">
+                                    <span class="checkmark"></span>
+                                    Work-Life Balance
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="setup-navigation">
+                    <button type="button" class="btn-secondary" id="prev-btn" onclick="previousStep()" style="display: none;">
+                        <i class="fas fa-arrow-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn-primary" id="next-btn" onclick="nextStep()">
+                        Next
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn-primary" id="complete-btn" onclick="completeSetup()" style="display: none;">
+                        Complete Profile
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        let currentSetupStep = 1;
+        const totalSteps = 5;
+
+        function nextStep() {
+            if (currentSetupStep < totalSteps) {
+                document.getElementById(`step-${currentSetupStep}`).classList.remove('active');
+                currentSetupStep++;
+                document.getElementById(`step-${currentSetupStep}`).classList.add('active');
+                updateProgress();
+                updateButtons();
+            }
+        }
+
+        function previousStep() {
+            if (currentSetupStep > 1) {
+                document.getElementById(`step-${currentSetupStep}`).classList.remove('active');
+                currentSetupStep--;
+                document.getElementById(`step-${currentSetupStep}`).classList.add('active');
+                updateProgress();
+                updateButtons();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentSetupStep / totalSteps) * 100;
+            document.getElementById('setup-progress').style.width = `${progress}%`;
+            document.getElementById('current-step').textContent = currentSetupStep;
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const completeBtn = document.getElementById('complete-btn');
+
+            prevBtn.style.display = currentSetupStep > 1 ? 'flex' : 'none';
+            nextBtn.style.display = currentSetupStep < totalSteps ? 'flex' : 'none';
+            completeBtn.style.display = currentSetupStep === totalSteps ? 'flex' : 'none';
+        }
+
+        function completeSetup() {
+            showNotification('Profile completed successfully!');
+            setTimeout(() => {
+                window.location.href = 'swipe.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

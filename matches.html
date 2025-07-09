@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Matches - HerMatchUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-heart"></i>
+                <span>HerMatchUp</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="swipe.html" class="nav-link">Find Matches</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-primary" onclick="window.location.href='swipe.html'">
+                    <i class="fas fa-heart"></i>
+                    Find More Matches
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Matches Section -->
+    <section class="matches-section">
+        <div class="matches-container">
+            <div class="matches-header">
+                <h1>My Matches</h1>
+                <p>Connect with your mentorship matches and start meaningful conversations</p>
+            </div>
+
+            <div class="matches-tabs">
+                <button class="tab-btn active" onclick="switchTab('active')">Active Matches (3)</button>
+                <button class="tab-btn" onclick="switchTab('pending')">Pending (2)</button>
+                <button class="tab-btn" onclick="switchTab('archived')">Archived (1)</button>
+            </div>
+
+            <div class="matches-content">
+                <!-- Active Matches -->
+                <div class="tab-content active" id="active-tab">
+                    <div class="matches-grid">
+                        <div class="match-card">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Dr. Sarah Chen</h3>
+                                    <p>AI Research Scientist at Google</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator active"></div>
+                                        <span>Active Mentorship</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn" onclick="openChat('sarah')">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="scheduleCall('sarah')">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">Machine Learning</span>
+                                    <span class="tag">PhD Guidance</span>
+                                    <span class="tag">Research</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Last message: 2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="match-card">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Maria Rodriguez</h3>
+                                    <p>Senior Software Engineer at Microsoft</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator active"></div>
+                                        <span>Active Mentorship</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn" onclick="openChat('maria')">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="scheduleCall('maria')">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">Full-Stack Development</span>
+                                    <span class="tag">Interview Prep</span>
+                                    <span class="tag">Career Growth</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Last message: 1 day ago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="match-card">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Dr. Priya Patel</h3>
+                                    <p>Biomedical Engineer & Startup Founder</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator new"></div>
+                                        <span>New Match</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn" onclick="openChat('priya')">
+                                        <i class="fas fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="scheduleCall('priya')">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">Bioengineering</span>
+                                    <span class="tag">Entrepreneurship</span>
+                                    <span class="tag">Leadership</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Matched 3 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Matches -->
+                <div class="tab-content" id="pending-tab">
+                    <div class="matches-grid">
+                        <div class="match-card pending">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Dr. Lisa Wang</h3>
+                                    <p>Data Scientist at Netflix</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator pending"></div>
+                                        <span>Waiting for Response</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn disabled">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">Data Science</span>
+                                    <span class="tag">Analytics</span>
+                                    <span class="tag">Python</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Interest sent 2 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="match-card pending">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Jennifer Kim</h3>
+                                    <p>UX Designer at Airbnb</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator pending"></div>
+                                        <span>Waiting for Response</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn disabled">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">UX Design</span>
+                                    <span class="tag">Product Design</span>
+                                    <span class="tag">User Research</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Interest sent 5 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Archived Matches -->
+                <div class="tab-content" id="archived-tab">
+                    <div class="matches-grid">
+                        <div class="match-card archived">
+                            <div class="match-header">
+                                <div class="match-avatar" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);"></div>
+                                <div class="match-info">
+                                    <h3>Dr. Amanda Foster</h3>
+                                    <p>Mechanical Engineer at Tesla</p>
+                                    <div class="match-status">
+                                        <div class="status-indicator archived"></div>
+                                        <span>Mentorship Completed</span>
+                                    </div>
+                                </div>
+                                <div class="match-actions">
+                                    <button class="action-btn" onclick="viewHistory('amanda')">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-tags">
+                                    <span class="tag">Mechanical Engineering</span>
+                                    <span class="tag">Automotive</span>
+                                    <span class="tag">Leadership</span>
+                                </div>
+                                <div class="last-activity">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>6-month mentorship completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Modal -->
+    <div class="modal" id="chat-modal">
+        <div class="modal-content chat-modal-content">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="chat-avatar" id="chat-avatar"></div>
+                    <div>
+                        <h3 id="chat-name">Dr. Sarah Chen</h3>
+                        <span class="online-status">Online</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Hi Jessica! I'm excited to be your mentor. I saw you're interested in AI research - that's fantastic!</p>
+                        <span class="message-time">2:30 PM</span>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>Thank you so much! I'm really looking forward to learning from you. I have so many questions about getting into research.</p>
+                        <span class="message-time">2:35 PM</span>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Perfect! Let's start with your current coursework and interests. What specific areas of AI are you most curious about?</p>
+                        <span class="message-time">2:40 PM</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message..." id="message-input">
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

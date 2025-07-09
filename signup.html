@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - HerMatchUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-heart"></i>
+                <span>HerMatchUp</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="login.html" class="nav-link">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sign Up Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Join HerMatchUp</h1>
+                    <p>Start your mentorship journey today</p>
+                </div>
+
+                <form class="auth-form" id="signup-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                        <small>Must be at least 8 characters long</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stemField">Primary STEM Field *</label>
+                        <select id="stemField" name="stemField" required>
+                            <option value="">Select your field</option>
+                            <option value="aerospace-engineering">Aerospace Engineering</option>
+                            <option value="agricultural-science">Agricultural Science</option>
+                            <option value="anatomy">Anatomy</option>
+                            <option value="anthropology">Anthropology</option>
+                            <option value="applied-mathematics">Applied Mathematics</option>
+                            <option value="archaeology">Archaeology</option>
+                            <option value="architecture">Architecture</option>
+                            <option value="artificial-intelligence">Artificial Intelligence</option>
+                            <option value="astronomy">Astronomy</option>
+                            <option value="astrophysics">Astrophysics</option>
+                            <option value="biochemistry">Biochemistry</option>
+                            <option value="bioengineering">Bioengineering</option>
+                            <option value="bioinformatics">Bioinformatics</option>
+                            <option value="biology">Biology</option>
+                            <option value="biomedical-engineering">Biomedical Engineering</option>
+                            <option value="biophysics">Biophysics</option>
+                            <option value="biotechnology">Biotechnology</option>
+                            <option value="botany">Botany</option>
+                            <option value="chemical-engineering">Chemical Engineering</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="civil-engineering">Civil Engineering</option>
+                            <option value="climate-science">Climate Science</option>
+                            <option value="computer-engineering">Computer Engineering</option>
+                            <option value="computer-science">Computer Science</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="data-science">Data Science</option>
+                            <option value="earth-science">Earth Science</option>
+                            <option value="ecology">Ecology</option>
+                            <option value="electrical-engineering">Electrical Engineering</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="environmental-engineering">Environmental Engineering</option>
+                            <option value="environmental-science">Environmental Science</option>
+                            <option value="epidemiology">Epidemiology</option>
+                            <option value="food-science">Food Science</option>
+                            <option value="forensic-science">Forensic Science</option>
+                            <option value="genetics">Genetics</option>
+                            <option value="geography">Geography</option>
+                            <option value="geology">Geology</option>
+                            <option value="geophysics">Geophysics</option>
+                            <option value="industrial-engineering">Industrial Engineering</option>
+                            <option value="information-technology">Information Technology</option>
+                            <option value="machine-learning">Machine Learning</option>
+                            <option value="marine-biology">Marine Biology</option>
+                            <option value="materials-science">Materials Science</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="mechanical-engineering">Mechanical Engineering</option>
+                            <option value="medical-research">Medical Research</option>
+                            <option value="meteorology">Meteorology</option>
+                            <option value="microbiology">Microbiology</option>
+                            <option value="nanotechnology">Nanotechnology</option>
+                            <option value="neuroscience">Neuroscience</option>
+                            <option value="nuclear-engineering">Nuclear Engineering</option>
+                            <option value="oceanography">Oceanography</option>
+                            <option value="paleontology">Paleontology</option>
+                            <option value="pharmacology">Pharmacology</option>
+                            <option value="physics">Physics</option>
+                            <option value="physiology">Physiology</option>
+                            <option value="planetary-science">Planetary Science</option>
+                            <option value="psychology">Psychology</option>
+                            <option value="public-health">Public Health</option>
+                            <option value="quantum-computing">Quantum Computing</option>
+                            <option value="robotics">Robotics</option>
+                            <option value="software-engineering">Software Engineering</option>
+                            <option value="statistics">Statistics</option>
+                            <option value="systems-engineering">Systems Engineering</option>
+                            <option value="telecommunications">Telecommunications</option>
+                            <option value="veterinary-science">Veterinary Science</option>
+                            <option value="zoology">Zoology</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experienceLevel">Experience Level *</label>
+                        <select id="experienceLevel" name="experienceLevel" required>
+                            <option value="">Select your experience level</option>
+                            <option value="0-1-years">0-1 Years</option>
+                            <option value="1-2-years">1-2 Years</option>
+                            <option value="2-3-years">2-3 Years</option>
+                            <option value="3-5-years">3-5 Years</option>
+                            <option value="5-plus-years">5+ Years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-large btn-full">
+                        Create My Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="link">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - HerMatchUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-heart"></i>
+                <span>HerMatchUp</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="swipe.html" class="nav-link">Find Matches</a>
+                <a href="matches.html" class="nav-link">My Matches</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>My Profile</h1>
+                <button class="btn-primary" id="edit-profile-btn">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </button>
+            </div>
+
+            <!-- Update the profile page with comprehensive fields -->
+
+            <!-- Replace the existing profile content with enhanced version -->
+            <div class="profile-content">
+                <div class="profile-main">
+                    <div class="profile-card">
+                        <div class="profile-image-section">
+                            <div class="profile-avatar">
+                                <div class="avatar-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <button class="change-photo-btn">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" id="profile-photo" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile-basic-info">
+                                <h2 id="profile-name">Jessica Thompson</h2>
+                                <p id="profile-title">Computer Science Student</p>
+                                <p id="profile-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    San Francisco, CA
+                                </p>
+                                <div class="profile-badges">
+                                    <span class="badge mentee-badge">Mentee</span>
+                                    <span class="badge verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="detail-section">
+                                <h3>About Me</h3>
+                                <p id="profile-bio">
+                                    I'm a junior studying Computer Science at UC Berkeley, passionate about AI and machine learning. 
+                                    Looking for guidance on research opportunities and career paths in tech. I'm particularly interested 
+                                    in the intersection of AI and social good.
+                                </p>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>STEM Fields & Expertise</h3>
+                                <div class="specialization-tags" id="specialization-tags">
+                                    <span class="tag">Computer Science</span>
+                                    <span class="tag">Machine Learning</span>
+                                    <span class="tag">AI Research</span>
+                                    <span class="tag">Python</span>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Career Goals</h3>
+                                <div class="goals-list">
+                                    <div class="goal-item">
+                                        <i class="fas fa-target"></i>
+                                        <span>Secure a research internship in AI</span>
+                                    </div>
+                                    <div class="goal-item">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span>Pursue PhD in Machine Learning</span>
+                                    </div>
+                                    <div class="goal-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>Work at a tech company focused on social impact</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Personality & Communication</h3>
+                                <div class="personality-grid">
+                                    <div class="personality-item">
+                                        <span class="personality-label">Communication Style</span>
+                                        <span class="personality-value">Direct & Collaborative</span>
+                                    </div>
+                                    <div class="personality-item">
+                                        <span class="personality-label">Learning Style</span>
+                                        <span class="personality-value">Visual & Hands-on</span>
+                                    </div>
+                                    <div class="personality-item">
+                                        <span class="personality-label">Personality Type</span>
+                                        <span class="personality-value">Introvert</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Mentorship Preferences</h3>
+                                <div class="preferences-grid">
+                                    <div class="preference-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <div>
+                                            <span class="pref-label">Availability</span>
+                                            <span class="pref-value">Evenings & Weekends</span>
+                                        </div>
+                                    </div>
+                                    <div class="preference-item">
+                                        <i class="fas fa-video"></i>
+                                        <div>
+                                            <span class="pref-label">Communication</span>
+                                            <span class="pref-value">Video Calls, Chat</span>
+                                        </div>
+                                    </div>
+                                    <div class="preference-item">
+                                        <i class="fas fa-clock"></i>
+                                        <div>
+                                            <span class="pref-label">Frequency</span>
+                                            <span class="pref-value">Bi-weekly</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Looking For Help With</h3>
+                                <div class="help-tags">
+                                    <span class="tag help-tag">Career Guidance</span>
+                                    <span class="tag help-tag">Research Opportunities</span>
+                                    <span class="tag help-tag">Industry Insights</span>
+                                    <span class="tag help-tag">Networking</span>
+                                    <span class="tag help-tag">Interview Preparation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced sidebar with more detailed information -->
+                <div class="profile-sidebar">
+                    <div class="sidebar-card">
+                        <h3>Profile Completion</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                        <p>85% Complete</p>
+                        <ul class="completion-checklist">
+                            <li class="completed"><i class="fas fa-check"></i> Basic Information</li>
+                            <li class="completed"><i class="fas fa-check"></i> Profile Photo</li>
+                            <li class="completed"><i class="fas fa-check"></i> Bio & Goals</li>
+                            <li class="completed"><i class="fas fa-check"></i> Preferences</li>
+                            <li class="pending"><i class="fas fa-circle"></i> Verification</li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Matching Preferences</h3>
+                        <div class="matching-prefs">
+                            <div class="pref-item">
+                                <span class="pref-label">Age Range</span>
+                                <span class="pref-value">25-35</span>
+                            </div>
+                            <div class="pref-item">
+                                <span class="pref-label">Experience Level</span>
+                                <span class="pref-value">Mid to Senior</span>
+                            </div>
+                            <div class="pref-item">
+                                <span class="pref-label">Location</span>
+                                <span class="pref-value">Bay Area or Remote</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>Quick Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">12</span>
+                                <span class="stat-label">Profile Views</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Matches</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">1</span>
+                                <span class="stat-label">Active Mentorship</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-btn" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-profile-form">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <input type="text" id="edit-name" value="Jessica Thompson">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-title">Current Position/Title</label>
+                        <input type="text" id="edit-title" value="Computer Science Student">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-location">Location</label>
+                        <input type="text" id="edit-location" value="San Francisco, CA">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">About Me</label>
+                        <textarea id="edit-bio" rows="4">I'm a junior studying Computer Science at UC Berkeley, passionate about AI and machine learning. Looking for guidance on research opportunities and career paths in tech. I'm particularly interested in the intersection of AI and social good.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>STEM Specializations</label>
+                        <div class="tag-input">
+                            <input type="text" id="specialization-input" placeholder="Add specialization...">
+                            <button type="button" onclick="addSpecialization()">Add</button>
+                        </div>
+                        <div class="current-tags" id="current-specializations">
+                            <span class="tag removable">Computer Science <i class="fas fa-times"></i></span>
+                            <span class="tag removable">Machine Learning <i class="fas fa-times"></i></span>
+                            <span class="tag removable">AI Research <i class="fas fa-times"></i></span>
+                            <span class="tag removable">Python <i class="fas fa-times"></i></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
