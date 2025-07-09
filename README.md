@@ -2,7 +2,7 @@
 
 HerMatchUp is a swipe-based mentorship and connection platform tailored for girls and women in STEM. The platform provides an intuitive and emotionally intelligent environment where users can discover mentors, collaborators, or supportive peers based on shared academic fields, career goals, personality traits, and availability.
 
-Unlike traditional mentorship platforms, HerMatchUp uses a familiar swipe-based interface and inclusive logic — allowing every user to be both a mentor and a mentee. It aims to break down barriers in STEM by fostering meaningful, supportive, and personalized connections.
+Unlike traditional mentorship platforms, HerMatchUp uses a familiar swipe-based interface and inclusive logic, allowing every user to be both a mentor and a mentee. It aims to break down barriers in STEM by fostering meaningful, supportive, and personalized connections.
 
 ---
 
