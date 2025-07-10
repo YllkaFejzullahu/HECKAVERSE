@@ -1,3 +1,47 @@
+<?php
+session_start();
+require 'db_connection.php';
+
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize user input
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    // Prepare statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $stmt->store_result();
+
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($userId, $hashedPassword);
+        $stmt->fetch();
+
+        if (password_verify($password, $hashedPassword)) {
+            $_SESSION['user_id'] = $userId;
+            header("Location: swipe.html");
+            exit;
+        } else {
+            $error = "Invalid password.";
+        }
+    } else {
+        $error = "No account found with that email.";
+    }
+
+    $stmt->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,8 +75,11 @@
                     <h1>Welcome Back</h1>
                     <p>Sign in to continue your mentorship journey</p>
                 </div>
-
-                <form class="auth-form" id="login-form">
+                  <?php if (!empty($error)): ?>
+        <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+    <?php endif; ?>
+                
+                <form class="auth-form" id="login-form" method="POST" action="">
                     <div class="form-group">
                         <label for="loginEmail">Email Address</label>
                         <input type="email" id="loginEmail" name="email" required>
