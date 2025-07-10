@@ -631,19 +631,25 @@ function handleSignup(e) {
   }, 1000)
 }
 
-function handleLogin(e) {
-  e.preventDefault()
-  const formData = new FormData(e.target)
-  const loginData = Object.fromEntries(formData)
+// function handleLogin(e) {
+//   e.preventDefault()
+//   const formData = new FormData(e.target)
+//   const loginData = Object.fromEntries(formData)
 
-  // Simulate API call
-  setTimeout(() => {
-    showNotification("Welcome back!")
-    // In real app, validate credentials with backend
-    localStorage.setItem("isLoggedIn", "true")
-    window.location.href = "swipe.html"
-  }, 1000)
-}
+//   const storedUserData = JSON.parse(localStorage.getItem("userData"))
+
+//   if (
+//     storedUserData &&
+//     loginData.email === storedUserData.email &&
+//     loginData.password === storedUserData.password
+//   ) {
+//     showNotification("Welcome back!")
+//     localStorage.setItem("isLoggedIn", "true")
+//     window.location.href = "swipe.html"
+//   } else {
+//     showNotification("Invalid email or password", "error")
+//   }
+// }
 
 // Filter functionality
 let activeFilters = {}
