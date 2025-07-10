@@ -48,7 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - HerMatchUp</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="styles.css">
+=======
+    <link rel="stylesheet" href="loginCss.css">
+    <!-- <link rel="stylesheet" href="loginCss.css"> -->
+>>>>>>> ea21cd8 (css te ndame)
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -113,7 +118,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> ea21cd8 (css te ndame)
     <script src="script.js"></script>
 </body>
 </html>
