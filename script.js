@@ -665,7 +665,6 @@ function applyFilters() {
     experience: document.getElementById("experience-filter")?.value || "",
     communicationTone: document.getElementById("communication-tone-filter")?.value || "",
     communicationFrequency: document.getElementById("communication-frequency-filter")?.value || "",
-    feedbackStyle: document.getElementById("feedback-style-filter")?.value || "",
     personality: document.getElementById("personality-filter")?.value || "",
     location: document.getElementById("location-filter")?.value || "",
     responseTime: document.getElementById("response-time-filter")?.value || "",
