@@ -25,9 +25,10 @@ $isLoggedIn = isset($_SESSION['user']); // Assume you store user data in $_SESSI
             </div>
             <div class="nav-menu" id="nav-menu">
                 <a href="#home" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About Us</a>
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#about" class="nav-link">About</a>
+                
                 <?php if ($isLoggedIn): ?>
         <a href="profile.php" class="nav-link">Profile</a>
     <?php endif; ?>
