@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+// Use session-stored data if available
+if (isset($_SESSION['profile_data'])) {
+    $profile = array_merge($profile ?? [], $_SESSION['profile_data']);
+    unset($_SESSION['profile_data']);
+}
+
 require 'db_connection.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -9,14 +16,29 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// Fetch user profile data
 $stmt = $conn->prepare("SELECT * FROM profiles WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $profile = $result->fetch_assoc();
 $stmt->close();
-?>
 
+// Fetch user data from users table
+$user_stmt = $conn->prepare("SELECT email, role FROM users WHERE id = ?");
+$user_stmt->bind_param("i", $user_id);
+$user_stmt->execute();
+$user_result = $user_stmt->get_result();
+$user = $user_result->fetch_assoc();
+$user_stmt->close();
+
+// Debugging - uncomment to see the data
+// echo '<pre>';
+// print_r($profile);
+// print_r($user);
+// echo '</pre>';
+// exit;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +61,7 @@ $stmt->close();
             <div class="nav-menu">
                 <a href="index.php" class="nav-link">Home</a>
                 <a href="swipe.php" class="nav-link">Find Matches</a>
-                <a href="matches.html" class="nav-link">My Matches</a>
+                <a href="matches.php" class="nav-link">My Matches</a>
             </div>
         </div>
     </nav>
@@ -55,9 +77,6 @@ $stmt->close();
                 </button>
             </div>
 
-            <!-- Update the profile page with comprehensive fields -->
-
-            <!-- Replace the existing profile content with enhanced version -->
             <div class="profile-content">
                 <div class="profile-main">
                     <div class="profile-card">
@@ -72,15 +91,16 @@ $stmt->close();
                                 <input type="file" id="profile-photo" accept="image/*" style="display: none;">
                             </div>
                             <div class="profile-basic-info">
-                                <h2 id="profile-name">Jessica Thompson</h2>
-                                <p id="profile-title">Computer Science Student</p>
+                                <h2 id="profile-name"><?php echo htmlspecialchars($profile['full_name'] ?? 'New User'); ?></h2>
+                                <p id="profile-title"><?php echo htmlspecialchars($profile['stem_field'] ?? 'STEM Professional'); ?></p>
                                 <p id="profile-location">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    San Francisco, CA
+                                    <?php echo htmlspecialchars($profile['location'] ?? 'Location not set'); ?>
                                 </p>
                                 <div class="profile-badges">
-                                    <span class="badge mentee-badge">Mentee</span>
-                                    <span class="badge verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                    <span class="badge <?php echo ($user['role'] === 'mentor') ? 'mentor-badge' : 'mentee-badge'; ?>">
+                                        <?php echo ucfirst($user['role'] ?? 'user'); ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -89,19 +109,23 @@ $stmt->close();
                             <div class="detail-section">
                                 <h3>About Me</h3>
                                 <p id="profile-bio">
-                                    I'm a junior studying Computer Science at UC Berkeley, passionate about AI and machine learning. 
-                                    Looking for guidance on research opportunities and career paths in tech. I'm particularly interested 
-                                    in the intersection of AI and social good.
+                                    <?php echo htmlspecialchars($profile['goals'] ?? 'Tell us about yourself and your goals'); ?>
                                 </p>
                             </div>
 
                             <div class="detail-section">
                                 <h3>STEM Fields & Expertise</h3>
                                 <div class="specialization-tags" id="specialization-tags">
-                                    <span class="tag">Computer Science</span>
-                                    <span class="tag">Machine Learning</span>
-                                    <span class="tag">AI Research</span>
-                                    <span class="tag">Python</span>
+                                    <?php 
+                                    if (!empty($profile['interests'])) {
+                                        $interests = explode(',', $profile['interests']);
+                                        foreach ($interests as $interest) {
+                                            echo '<span class="tag">'.htmlspecialchars(trim($interest)).'</span>';
+                                        }
+                                    } else {
+                                        echo '<span class="tag">Add your interests</span>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
 
@@ -110,15 +134,7 @@ $stmt->close();
                                 <div class="goals-list">
                                     <div class="goal-item">
                                         <i class="fas fa-target"></i>
-                                        <span>Secure a research internship in AI</span>
-                                    </div>
-                                    <div class="goal-item">
-                                        <i class="fas fa-graduation-cap"></i>
-                                        <span>Pursue PhD in Machine Learning</span>
-                                    </div>
-                                    <div class="goal-item">
-                                        <i class="fas fa-briefcase"></i>
-                                        <span>Work at a tech company focused on social impact</span>
+                                        <span><?php echo htmlspecialchars($profile['goals'] ?? 'Set your career goals'); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -128,110 +144,58 @@ $stmt->close();
                                 <div class="personality-grid">
                                     <div class="personality-item">
                                         <span class="personality-label">Communication Style</span>
-                                        <span class="personality-value">Direct & Collaborative</span>
-                                    </div>
-                                    <div class="personality-item">
-                                        <span class="personality-label">Learning Style</span>
-                                        <span class="personality-value">Visual & Hands-on</span>
+                                        <span class="personality-value">
+                                            <?php echo htmlspecialchars($profile['communication_style'] ?? 'Not specified'); ?>
+                                        </span>
                                     </div>
                                     <div class="personality-item">
                                         <span class="personality-label">Personality Type</span>
-                                        <span class="personality-value">Introvert</span>
+                                        <span class="personality-value">
+                                            <?php echo htmlspecialchars($profile['personality_traits'] ?? 'Not specified'); ?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="detail-section">
-                                <h3>Mentorship Preferences</h3>
+                                <h3>Availability</h3>
                                 <div class="preferences-grid">
                                     <div class="preference-item">
                                         <i class="fas fa-calendar"></i>
                                         <div>
                                             <span class="pref-label">Availability</span>
-                                            <span class="pref-value">Evenings & Weekends</span>
+                                            <span class="pref-value">
+                                                <?php echo htmlspecialchars($profile['availability'] ?? 'Not specified'); ?>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="preference-item">
-                                        <i class="fas fa-video"></i>
-                                        <div>
-                                            <span class="pref-label">Communication</span>
-                                            <span class="pref-value">Video Calls, Chat</span>
-                                        </div>
-                                    </div>
-                                    <div class="preference-item">
-                                        <i class="fas fa-clock"></i>
-                                        <div>
-                                            <span class="pref-label">Frequency</span>
-                                            <span class="pref-value">Bi-weekly</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-section">
-                                <h3>Looking For Help With</h3>
-                                <div class="help-tags">
-                                    <span class="tag help-tag">Career Guidance</span>
-                                    <span class="tag help-tag">Research Opportunities</span>
-                                    <span class="tag help-tag">Industry Insights</span>
-                                    <span class="tag help-tag">Networking</span>
-                                    <span class="tag help-tag">Interview Preparation</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Enhanced sidebar with more detailed information -->
                 <div class="profile-sidebar">
                     <div class="sidebar-card">
                         <h3>Profile Completion</h3>
+                        <?php
+                        $completion = 0;
+                        if (!empty($profile['full_name'])) $completion += 20;
+                        if (!empty($profile['stem_field'])) $completion += 20;
+                        if (!empty($profile['goals'])) $completion += 20;
+                        if (!empty($profile['interests'])) $completion += 20;
+                        if (!empty($profile['communication_style'])) $completion += 20;
+                        ?>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
+                            <div class="progress-fill" style="width: <?php echo $completion; ?>%"></div>
                         </div>
-                        <p>85% Complete</p>
-                        <ul class="completion-checklist">
-                            <li class="completed"><i class="fas fa-check"></i> Basic Information</li>
-                            <li class="completed"><i class="fas fa-check"></i> Profile Photo</li>
-                            <li class="completed"><i class="fas fa-check"></i> Bio & Goals</li>
-                            <li class="completed"><i class="fas fa-check"></i> Preferences</li>
-                            <li class="pending"><i class="fas fa-circle"></i> Verification</li>
-                        </ul>
+                        <p><?php echo $completion; ?>% Complete</p>
                     </div>
 
                     <div class="sidebar-card">
-                        <h3>Matching Preferences</h3>
-                        <div class="matching-prefs">
-                            <div class="pref-item">
-                                <span class="pref-label">Age Range</span>
-                                <span class="pref-value">25-35</span>
-                            </div>
-                            <div class="pref-item">
-                                <span class="pref-label">Experience Level</span>
-                                <span class="pref-value">Mid to Senior</span>
-                            </div>
-                            <div class="pref-item">
-                                <span class="pref-label">Location</span>
-                                <span class="pref-value">Bay Area or Remote</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-card">
-                        <h3>Quick Stats</h3>
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <span class="stat-number">12</span>
-                                <span class="stat-label">Profile Views</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">3</span>
-                                <span class="stat-label">Matches</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">1</span>
-                                <span class="stat-label">Active Mentorship</span>
-                            </div>
+                        <h3>Contact Information</h3>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
                         </div>
                     </div>
                 </div>
@@ -249,42 +213,62 @@ $stmt->close();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-profile-form">
+                <form id="edit-profile-form" action="update_profile.php" method="POST">
                     <div class="form-group">
                         <label for="edit-name">Full Name</label>
-                        <input type="text" id="edit-name" value="Jessica Thompson">
+                        <input type="text" id="edit-name" name="full_name" value="<?php echo htmlspecialchars($profile['full_name'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit-title">Current Position/Title</label>
-                        <input type="text" id="edit-title" value="Computer Science Student">
+                        <label for="edit-title">STEM Field</label>
+                        <input type="text" id="edit-title" name="stem_field" value="<?php echo htmlspecialchars($profile['stem_field'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-location">Location</label>
-                        <input type="text" id="edit-location" value="San Francisco, CA">
+                        <input type="text" id="edit-location" name="location" value="<?php echo htmlspecialchars($profile['location'] ?? ''); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit-bio">About Me</label>
-                        <textarea id="edit-bio" rows="4">I'm a junior studying Computer Science at UC Berkeley, passionate about AI and machine learning. Looking for guidance on research opportunities and career paths in tech. I'm particularly interested in the intersection of AI and social good.</textarea>
+                        <label for="edit-bio">Goals</label>
+                        <textarea id="edit-bio" name="goals" rows="4" required><?php echo htmlspecialchars($profile['goals'] ?? ''); ?></textarea>
                     </div>
                     <div class="form-group">
-                        <label>STEM Specializations</label>
-                        <div class="tag-input">
-                            <input type="text" id="specialization-input" placeholder="Add specialization...">
-                            <button type="button" onclick="addSpecialization()">Add</button>
-                        </div>
-                        <div class="current-tags" id="current-specializations">
-                            <span class="tag removable">Computer Science <i class="fas fa-times"></i></span>
-                            <span class="tag removable">Machine Learning <i class="fas fa-times"></i></span>
-                            <span class="tag removable">AI Research <i class="fas fa-times"></i></span>
-                            <span class="tag removable">Python <i class="fas fa-times"></i></span>
-                        </div>
+                        <label for="edit-interests">Interests (comma separated)</label>
+                        <textarea id="edit-interests" name="interests" rows="3"><?php echo htmlspecialchars($profile['interests'] ?? ''); ?></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="edit-communication">Communication Style</label>
+                        <select id="edit-communication" name="communication_style">
+                            <option value="">Select style</option>
+                            <option value="Friendly and Casual" <?php echo ($profile['communication_style'] ?? '') === 'Friendly and Casual' ? 'selected' : ''; ?>>Friendly & Casual</option>
+                            <option value="Professional and Formal" <?php echo ($profile['communication_style'] ?? '') === 'Professional and Formal' ? 'selected' : ''; ?>>Professional & Formal</option>
+                            <option value="Supportive and Empathetic" <?php echo ($profile['communication_style'] ?? '') === 'Supportive and Empathetic' ? 'selected' : ''; ?>>Supportive & Empathetic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-personality">Personality Type</label>
+                        <select id="edit-personality" name="personality_traits">
+                            <option value="">Select type</option>
+                            <option value="INTJ" <?php echo ($profile['personality_traits'] ?? '') === 'INTJ' ? 'selected' : ''; ?>>INTJ - The Architect</option>
+                            <option value="INTP" <?php echo ($profile['personality_traits'] ?? '') === 'INTP' ? 'selected' : ''; ?>>INTP - The Logician</option>
+                            <!-- Add other MBTI options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-availability">Availability</label>
+                        <input type="text" id="edit-availability" name="availability" value="<?php echo htmlspecialchars($profile['availability'] ?? ''); ?>">
+                    </div>
+                    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                 </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-                <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
-            </div>
+            <form id="edit-profile-form" action="update_profile.php" method="POST">
+    <!-- your form fields -->
+    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+
+    <div class="modal-footer">
+        <button class="btn-secondary" type="button" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-primary" type="submit">Save Changes</button>
+    </div>
+</form>
+
         </div>
     </div>
 
