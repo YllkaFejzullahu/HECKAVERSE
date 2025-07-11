@@ -12,8 +12,8 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.location.href='index.html'">
-                <i class="fas fa-heart"></i>
+            <div class="nav-logo" onclick="window.location.href='index.php'">
+                <i class="fas fa-handshake"></i>
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">

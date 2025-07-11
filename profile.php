@@ -55,7 +55,7 @@ $user_stmt->close();
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo" onclick="window.location.href='index.php'">
-                <i class="fas fa-heart"></i>
+                <i class="fas fa-handshake"></i>
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
