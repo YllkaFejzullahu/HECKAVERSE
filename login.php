@@ -48,12 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - HerMatchUp</title>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="styles.css">
-=======
     <link rel="stylesheet" href="loginCss.css">
     <!-- <link rel="stylesheet" href="loginCss.css"> -->
->>>>>>> ea21cd8 (css te ndame)
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -61,13 +57,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.location.href='index.html'">
+            <div class="nav-logo" onclick="window.location.href='index.php'">
                 <i class="fas fa-heart"></i>
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="signup.html" class="nav-link">Sign Up</a>
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="signup.php" class="nav-link">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -113,16 +109,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="auth-footer">
-                    <p>Don't have an account? <a href="signup.html" class="link">Sign up here</a></p>
+                    <p>Don't have an account? <a href="signup.php" class="link">Sign up here</a></p>
                 </div>
             </div>
         </div>
     </section>
-<<<<<<< HEAD
-
-=======
         
->>>>>>> ea21cd8 (css te ndame)
     <script src="script.js"></script>
 </body>
 </html>

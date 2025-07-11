@@ -1,3 +1,58 @@
+<?php
+session_start();
+require 'db_connection.php'; // contains $conn = new mysqli(...);
+
+// Check form submission
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Get and sanitize inputs
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
+    $location = $_POST['location'];
+    $stemField = $_POST['stemField'];
+    $personality = $_POST['personalityType'];
+    $communicationTone = $_POST['communicationTone'];
+
+    $fullName = $firstName . ' ' . $lastName;
+
+    // Validate passwords
+    if ($password !== $confirmPassword) {
+        die("Passwords do not match.");
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $role = 'mentee'; // hardcoded for now, or you can collect via form
+
+    // INSERT INTO `users`
+    $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $email, $hashedPassword, $role);
+
+    if ($stmt->execute()) {
+        $user_id = $stmt->insert_id;
+        $stmt->close();
+
+        // INSERT INTO `profiles`
+        $stmt2 = $conn->prepare("INSERT INTO profiles (user_id, full_name, location, stem_field, personality_traits, communication_style)
+                                 VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt2->bind_param("isssss", $user_id, $fullName, $location, $stemField, $personality, $communicationTone);
+        $stmt2->execute();
+        $stmt2->close();
+
+        // Set session
+        $_SESSION['user_id'] = $user_id;
+
+        // Redirect to profile page
+        header("Location: profile.php");
+        exit;
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,12 +67,12 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.location.href='index.html'">
+            <div class="nav-logo" onclick="window.location.href='index.php'">
                 <i class="fas fa-heart"></i>
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.php" class="nav-link">Home</a>
                 <a href="login.php" class="nav-link">Login</a>
             </div>
         </div>
@@ -31,8 +86,9 @@
                     <h1>Join HerMatchUp</h1>
                     <p>Start your mentorship journey today</p>
                 </div>
-
-                <form class="auth-form" id="signup-form">
+                
+                
+                <form class="auth-form" id="signup-form" method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>

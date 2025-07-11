@@ -1,3 +1,9 @@
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user']); // Assume you store user data in $_SESSION['user']
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +19,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.location.href='index.html'">
+            <div class="nav-logo" onclick="window.location.href='index.php'">
                 <i class="fas fa-handshake"></i>
                 <span>HerMatchUp</span>
             </div>
@@ -22,11 +28,17 @@
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
                 <a href="#about" class="nav-link">About</a>
-                <a href="profile.html" class="nav-link">Profile</a>
+                <?php if ($isLoggedIn): ?>
+        <a href="profile.php" class="nav-link">Profile</a>
+    <?php endif; ?>
             </div>
             <div class="nav-buttons">
-    <button class="btn-secondary" onclick="window.location.href='login.php'">Sign In</button>
-    <button class="btn-primary" onclick="window.location.href='signup.html'">Sign Up</button>
+    <?php if (!$isLoggedIn): ?>
+        <button class="btn-secondary" onclick="window.location.href='login.php'">Sign In</button>
+        <button class="btn-primary" onclick="window.location.href='signup.php'">Sign Up</button>
+    <?php else: ?>
+        <button class="btn-secondary" onclick="window.location.href='logout.php'">Logout</button>
+    <?php endif; ?>
 </div>
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -83,10 +95,18 @@
         </div>
     </div>
     <div class="hero-buttons">
-        <button class="btn-primary btn-large" onclick="window.location.href='swipe.php'">
-            <i class="fas fa-heart"></i>
-            Start Matching
-        </button>
+       <?php if (!$isLoggedIn): ?>
+    <button class="btn-primary btn-large" onclick="window.location.href='signup.php'">
+        <i class="fas fa-heart"></i>
+        Start Matching
+    </button>
+<?php else: ?>
+    <button class="btn-primary btn-large" onclick="window.location.href='swipe.php'">
+        <i class="fas fa-heart"></i>
+        Start Matching
+    </button>
+<?php endif; ?>
+
         <button class="btn-secondary btn-large" onclick="scrollToSection('how-it-works')">
             <i class="fas fa-play"></i>
             How It Works
@@ -212,7 +232,7 @@
                     <h3>Platform</h3>
                     <ul>
                         <li><a href="swipe.php">Start Matching</a></li>
-                        <li><a href="profile.html">Create Profile</a></li>
+                        <li><a href="profile.php">Create Profile</a></li>
                         <li><a href="matches.html">My Matches</a></li>
                     </ul>
                 </div>

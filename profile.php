@@ -1,14 +1,30 @@
+<?php
+session_start();
+require 'db_connection.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+$stmt = $conn->prepare("SELECT * FROM profiles WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$profile = $result->fetch_assoc();
+$stmt->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - HerMatchUp</title>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="styles.css">
-=======
     <link rel="stylesheet" href="profileCss.css">
->>>>>>> ea21cd8 (css te ndame)
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -16,13 +32,13 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.location.href='index.html'">
+            <div class="nav-logo" onclick="window.location.href='index.php'">
                 <i class="fas fa-heart"></i>
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="swipe.html" class="nav-link">Find Matches</a>
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="swipe.php" class="nav-link">Find Matches</a>
                 <a href="matches.html" class="nav-link">My Matches</a>
             </div>
         </div>
