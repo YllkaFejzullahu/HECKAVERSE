@@ -1,53 +1,102 @@
 <?php
 session_start();
-require 'db_connection.php'; // contains $conn = new mysqli(...);
+require 'db_connection.php';
 
-// Check form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Get and sanitize inputs
-    $firstName = trim($_POST['firstName']);
-    $lastName = trim($_POST['lastName']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirmPassword'];
-    $location = $_POST['location'];
-    $stemField = $_POST['stemField'];
-    $personality = $_POST['personalityType'];
-    $communicationTone = $_POST['communicationTone'];
-
-    $fullName = $firstName . ' ' . $lastName;
-
-    // Validate passwords
-    if ($password !== $confirmPassword) {
-        die("Passwords do not match.");
-    }
-
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $role = 'mentee'; // hardcoded for now, or you can collect via form
-
-    // INSERT INTO `users`
-    $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $email, $hashedPassword, $role);
-
-    if ($stmt->execute()) {
-        $user_id = $stmt->insert_id;
+    try {
+       
+        $firstName = trim($_POST['firstName'] ?? '');
+        $lastName = trim($_POST['lastName'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirmPassword'] ?? '';
+        
+        // Validate inputs
+        if (empty($firstName) || empty($lastName) || empty($email) || empty($password)) {
+            throw new Exception("All required fields must be filled.");
+        }
+        
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Invalid email format.");
+        }
+        
+        if (strlen($password) < 8) {
+            throw new Exception("Password must be at least 8 characters long.");
+        }
+        
+        if ($password !== $confirmPassword) {
+            throw new Exception("Passwords do not match.");
+        }
+        
+        // Check if email exists
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        if ($stmt->get_result()->num_rows > 0) {
+            throw new Exception("Email already registered.");
+        }
         $stmt->close();
 
-        // INSERT INTO `profiles`
-        $stmt2 = $conn->prepare("INSERT INTO profiles (user_id, full_name, location, stem_field, personality_traits, communication_style)
-                                 VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt2->bind_param("isssss", $user_id, $fullName, $location, $stemField, $personality, $communicationTone);
-        $stmt2->execute();
-        $stmt2->close();
+        // Hash password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $role = $_POST['role'] ?? 'user'; // Default role
+        
+        // Start transaction
+        $conn->begin_transaction();
 
-        // Set session
-        $_SESSION['user_id'] = $user_id;
-
-        // Redirect to profile page
-        header("Location: profile.php");
+        try {
+            // Insert user
+            $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $email, $hashedPassword, $role);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Error creating user: " . $stmt->error);
+            }
+            
+            $user_id = $conn->insert_id;
+            $stmt->close();
+            
+            // Insert profile
+            $fullName = $firstName . ' ' . $lastName;
+            $age = $_POST['age'] ?? null;
+            $location = $_POST['location'] ?? null;
+            $stemField = $_POST['stemField'] ?? null;
+            $interests = $_POST['interests'] ?? null;
+            $skills = $_POST['skills'] ?? null;
+            $goals = $_POST['goals'] ?? null;
+            $communicationStyle = $_POST['communicationTone'] ?? null;
+            $personalityTraits = $_POST['personalityType'] ?? null;
+            $availability = $_POST['availability'] ?? null;
+            
+            $stmt2 = $conn->prepare("INSERT INTO profiles 
+                (user_id, full_name, age, location, stem_field, interests, skills, goals, communication_style, personality_traits, availability)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                
+            $stmt2->bind_param("issssssssss", 
+                $user_id, $fullName, $age, $location, $stemField, $interests, 
+                $skills, $goals, $communicationStyle, $personalityTraits, $availability);
+                
+            if (!$stmt2->execute()) {
+                throw new Exception("Error creating profile: " . $stmt2->error);
+            }
+            $stmt2->close();
+            
+            $conn->commit();
+            
+            $_SESSION['user_id'] = $user_id;
+            
+            header("Location: profile.php");
+            exit;
+            
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw $e;
+        }
+        
+    } catch (Exception $e) {
+        $_SESSION['signup_error'] = $e->getMessage();
+        header("Location: signup.php");
         exit;
-    } else {
-        echo "Error: " . $stmt->error;
     }
 }
 ?>
@@ -88,8 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 
                 
-                <form class="auth-form" id="signup-form" method="POST">
-                    <div class="form-row">
+<form class="auth-form" id="signup-form" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">                    <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
                             <input type="text" id="firstName" name="firstName" required>

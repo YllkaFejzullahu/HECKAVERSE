@@ -605,31 +605,31 @@ function initializeAuthForms() {
   }
 }
 
-function handleSignup(e) {
-  e.preventDefault()
-  const formData = new FormData(e.target)
-  const userData = Object.fromEntries(formData)
+// function handleSignup(e) {
+//   e.preventDefault()
+//   const formData = new FormData(e.target)
+//   const userData = Object.fromEntries(formData)
 
-  // Validate passwords match
-  if (userData.password !== userData.confirmPassword) {
-    showNotification("Passwords do not match", "error")
-    return
-  }
+//   // Validate passwords match
+//   if (userData.password !== userData.confirmPassword) {
+//     showNotification("Passwords do not match", "error")
+//     return
+//   }
 
-  // Validate password strength
-  if (userData.password.length < 8) {
-    showNotification("Password must be at least 8 characters long", "error")
-    return
-  }
+//   // Validate password strength
+//   if (userData.password.length < 8) {
+//     showNotification("Password must be at least 8 characters long", "error")
+//     return
+//   }
 
-  // Simulate API call
-  setTimeout(() => {
-    showNotification("Account created successfully!")
-    // Store user data (in real app, this would be handled by backend)
-    localStorage.setItem("userData", JSON.stringify(userData))
-    window.location.href = "profile.html"
-  }, 1000)
-}
+//   // Simulate API call
+//   setTimeout(() => {
+//     showNotification("Account created successfully!")
+//     // Store user data (in real app, this would be handled by backend)
+//     localStorage.setItem("userData", JSON.stringify(userData))
+//     window.location.href = "profile.php"
+//   }, 1000)
+// }
 
 // function handleLogin(e) {
 //   e.preventDefault()
