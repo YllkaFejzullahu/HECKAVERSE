@@ -9,7 +9,7 @@ $isLoggedIn = isset($_SESSION['user']); // Assume you store user data in $_SESSI
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HerMatchUp - STEM Mentorship Made Personal</title>
+    <title>HerMatchUp</title>
     <!-- <link rel="stylesheet" href="styles.css"> -->
     <link rel="stylesheet" href="indexStyles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -63,14 +63,9 @@ $isLoggedIn = isset($_SESSION['user']); // Assume you store user data in $_SESSI
     </h2>
     <div class="hero-description-sections">
         <p class="hero-intro">
-            Welcome to HerMatchUp, a place where every swipe brings you closer to someone who truly understands your journey in STEM.
+            Welcome to HerMatchUp. Every swipe brings you closer to mentors who truly understand your STEM journey. <br> Beyond fields, we match for genuine compatibility through communication style, personality and more, ensuring connections that truly empower you.
         </p>
-        <p class="hero-mission">
-            It's not just about matching profiles — it's about finding a mentor who believes in your potential and supports your dreams.
-        </p>
-        <p class="hero-promise">
-            Here, you'll receive guidance that's both personal and professional, helping you navigate your technical career with confidence.
-        </p>
+        
     </div>
 </div>
 <div class="hero-visual">
