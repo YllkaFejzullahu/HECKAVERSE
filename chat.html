@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - HerMatchUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation with conditional messages link -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-handshake"></i>
+                <span>HerMatchUp</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+                <!-- Messages link only shown for logged-in users -->
+                <a href="chat.html" class="nav-link active" id="messages-nav" style="display: none;">
+                    <i class="fas fa-comments"></i>
+                    Messages
+                    <span class="message-badge" id="nav-message-badge" style="display: none;">0</span>
+                </a>
+                <a href="matches.html" class="nav-link" id="matches-nav" style="display: none;">
+                    <i class="fas fa-heart"></i>
+                    Matches
+                </a>
+                <a href="profile.html" class="nav-link" id="profile-nav" style="display: none;">Profile</a>
+            </div>
+            <div class="nav-buttons" id="auth-buttons">
+                <button class="btn-secondary" onclick="window.location.href='login.html'">Sign In</button>
+                <button class="btn-primary" onclick="window.location.href='signup.html'">Join Free</button>
+            </div>
+            <div class="nav-buttons" id="user-buttons" style="display: none;">
+                <span class="user-greeting" id="user-greeting">Hi, User!</span>
+                <button class="btn-secondary" onclick="logout()">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <!-- Conversations List View -->
+        <div class="conversations-view" id="conversations-view">
+            <div class="chat-header">
+                <h1><i class="fas fa-comments"></i> Messages</h1>
+                <button class="new-chat-btn" onclick="openNewChatModal()">
+                    <i class="fas fa-plus"></i>
+                    New Chat
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search conversations..." id="conversation-search">
+            </div>
+
+            <div class="conversations-list" id="conversations-list">
+                <!-- Conversations will be loaded here -->
+                <div class="loading-conversations">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading conversations...
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual Chat View -->
+        <div class="chat-view" id="chat-view" style="display: none;">
+            <div class="chat-header">
+                <button class="back-btn" onclick="showConversations()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="chat-user-info">
+                    <div class="chat-avatar" id="chat-avatar"></div>
+                    <div class="chat-user-details">
+                        <h3 id="chat-user-name">User Name</h3>
+                        <span class="user-status" id="chat-user-status">Online</span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-btn" onclick="scheduleCall()">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="action-btn" onclick="viewProfile()">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messages-container">
+                <!-- Messages will be loaded here -->
+            </div>
+
+            <div class="message-input-container">
+                <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                    <span>User is typing...</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="message-input" placeholder="Type your message..." maxlength="500">
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Chat Modal -->
+    <div class="modal" id="new-chat-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Start New Conversation</h3>
+                <button class="close-btn" onclick="closeNewChatModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-users">
+                    <input type="text" placeholder="Search users..." id="user-search">
+                </div>
+                <div class="users-list" id="users-list">
+                    <!-- Available users will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/chat.js"></script>
+    <script>
+        let currentConversationId = null;
+        let currentUserId = 1; // This should come from your authentication system
+        let pollingInterval = null;
+        let lastMessageId = 0;
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            if (isUserLoggedIn()) {
+                loadConversations();
+                startPolling();
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Load all conversations for the current user
+        function loadConversations() {
+            fetch(`php/chat.php?action=get_conversations&user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const conversationsList = document.getElementById('conversations-list');
+                    const emptyState = document.getElementById('emptyState');
+                    
+                    if (data.success && data.conversations.length > 0) {
+                        displayConversations(data.conversations);
+                        emptyState.style.display = 'none';
+                    } else {
+                        conversationsList.innerHTML = '';
+                        emptyState.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading conversations:', error);
+                    document.getElementById('conversations-list').innerHTML = 
+                        '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Error loading conversations</div>';
+                });
+        }
+
+        // Display conversations in the list
+        function displayConversations(conversations) {
+            const conversationsList = document.getElementById('conversations-list');
+            conversationsList.innerHTML = '';
+
+            conversations.forEach(conversation => {
+                const conversationDiv = document.createElement('div');
+                conversationDiv.className = 'conversation-item';
+                conversationDiv.onclick = () => openConversation(conversation.id, conversation.other_user);
+                
+                const lastMessageTime = conversation.last_message_time ? 
+                    formatTime(new Date(conversation.last_message_time)) : '';
+                
+                const unreadBadge = conversation.unread_count > 0 ? 
+                    `<span class="unread-badge">${conversation.unread_count}</span>` : '';
+
+                conversationDiv.innerHTML = `
+                    <img src="${conversation.other_user.avatar || '/placeholder.svg?height=50&width=50'}" 
+                         alt="${conversation.other_user.name}" class="conversation-avatar">
+                    <div class="conversation-info">
+                        <div class="conversation-header">
+                            <h4>${escapeHtml(conversation.other_user.name)}</h4>
+                            <span class="conversation-time">${lastMessageTime}</span>
+                        </div>
+                        <div class="conversation-preview">
+                            <p>${escapeHtml(conversation.last_message || 'No messages yet')}</p>
+                            ${unreadBadge}
+                        </div>
+                        <div class="conversation-meta">
+                            <span class="user-type">${conversation.other_user.user_type}</span>
+                            <span class="user-field">${conversation.other_user.stem_field || 'STEM'}</span>
+                        </div>
+                    </div>
+                `;
+                
+                conversationsList.appendChild(conversationDiv);
+            });
+        }
+
+        // Open a specific conversation
+        function openConversation(conversationId, otherUser) {
+            currentConversationId = conversationId;
+            
+            // Update chat header with user info
+            document.getElementById('chat-user-name').textContent = otherUser.name;
+            document.getElementById('chat-avatar').style.backgroundImage = `url(${otherUser.avatar || '/placeholder.svg?height=40&width=40'})`;
+            document.getElementById('chat-user-status').textContent = otherUser.is_online ? 'Online' : 'Offline';
+            
+            // Show chat view and hide conversations view
+            document.getElementById('conversations-view').style.display = 'none';
+            document.getElementById('chat-view').style.display = 'flex';
+            
+            // Load messages for this conversation
+            loadMessages();
+            
+            // Start polling for new messages
+            startMessagePolling();
+            
+            // Mark conversation as read
+            markConversationAsRead(conversationId);
+        }
+
+        // Load messages for the current conversation
+        function loadMessages() {
+            if (!currentConversationId) return;
+            
+            fetch(`php/chat.php?action=get_messages&conversation_id=${currentConversationId}&last_id=${lastMessageId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayMessages(data.messages);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading messages:', error);
+                });
+        }
+
+        // Display messages in the chat
+        function displayMessages(messages) {
+            const chatMessages = document.getElementById('messages-container');
+            
+            // Remove loading message if it exists
+            const loadingMessage = chatMessages.querySelector('.loading-messages');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+            
+            messages.forEach(message => {
+                if (message.id > lastMessageId) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${message.sender_id == currentUserId ? 'sent' : 'received'}`;
+                    
+                    const timeString = formatTime(new Date(message.timestamp));
+                    
+                    messageDiv.innerHTML = `
+                        <div class="message-content">${escapeHtml(message.message)}</div>
+                        <div class="message-time">${timeString}</div>
+                        ${message.sender_id == currentUserId ? '<div class="message-status"><i class="fas fa-check"></i></div>' : ''}
+                    `;
+                    
+                    chatMessages.appendChild(messageDiv);
+                    lastMessageId = Math.max(lastMessageId, message.id);
+                }
+            });
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send a new message
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            
+            if (!message || !currentConversationId) return;
+            
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const formData = new FormData();
+            formData.append('action', 'send_message');
+            formData.append('conversation_id', currentConversationId);
+            formData.append('sender_id', currentUserId);
+            formData.append('message', message);
+            
+            fetch('php/chat.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageInput.value = '';
+                    loadMessages(); // Refresh messages
+                } else {
+                    alert('Error sending message: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                alert('Error sending message. Please try again.');
+            })
+            .finally(() => {
+                sendButton.disabled = false;
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                messageInput.focus();
+            });
+        }
+
+        // Start polling for new messages
+        function startMessagePolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+            
+            pollingInterval = setInterval(() => {
+                if (currentConversationId) {
+                    loadMessages();
+                }
+            }, 2000);
+        }
+
+        // Stop polling for messages
+        function stopMessagePolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
+        // Show conversations view
+        function showConversations() {
+            document.getElementById('chat-view').style.display = 'none';
+            document.getElementById('conversations-view').style.display = 'block';
+            currentConversationId = null;
+            lastMessageId = 0;
+            stopMessagePolling();
+            loadConversations(); // Refresh conversations list
+        }
+
+        // Search conversations
+        function searchConversations() {
+            const searchTerm = document.getElementById('conversation-search').value.toLowerCase();
+            const conversations = document.querySelectorAll('.conversation-item');
+            
+            conversations.forEach(conversation => {
+                const name = conversation.querySelector('h4').textContent.toLowerCase();
+                const preview = conversation.querySelector('.conversation-preview p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || preview.includes(searchTerm)) {
+                    conversation.style.display = 'flex';
+                } else {
+                    conversation.style.display = 'none';
+                }
+            });
+        }
+
+        // Open new chat modal
+        function openNewChatModal() {
+            document.getElementById('new-chat-modal').style.display = 'block';
+            loadAvailableUsers();
+        }
+
+        // Close new chat modal
+        function closeNewChatModal() {
+            document.getElementById('new-chat-modal').style.display = 'none';
+        }
+
+        // Load available users for new chat
+        function loadAvailableUsers() {
+            fetch(`php/chat.php?action=get_users&current_user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayAvailableUsers(data.users);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading users:', error);
+                });
+        }
+
+        // Display available users
+        function displayAvailableUsers(users) {
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+            
+            users.forEach(user => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'user-item';
+                userDiv.onclick = () => startNewConversation(user.id);
+                
+                userDiv.innerHTML = `
+                    <img src="${user.avatar || '/placeholder.svg?height=40&width=40'}" alt="${user.name}" class="user-avatar">
+                    <div class="user-info">
+                        <h4>${escapeHtml(user.name)}</h4>
+                        <p>${user.user_type} • ${user.stem_field || 'STEM'}</p>
+                        <span class="user-location">${user.location || 'Location not specified'}</span>
+                    </div>
+                    <button class="chat-btn">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                `;
+                
+                usersList.appendChild(userDiv);
+            });
+        }
+
+        // Start new conversation
+        function startNewConversation(otherUserId) {
+            const formData = new FormData();
+            formData.append('action', 'create_conversation');
+            formData.append('user1_id', currentUserId);
+            formData.append('user2_id', otherUserId);
+            
+            fetch('php/chat.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeNewChatModal();
+                    loadConversations();
+                } else {
+                    alert('Error creating conversation: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error creating conversation:', error);
+            });
+        }
+
+        // Mark conversation as read
+        function markConversationAsRead(conversationId) {
+            fetch('php/chat.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=mark_read&conversation_id=${conversationId}&user_id=${currentUserId}`
+            });
+        }
+
+        // Utility functions
+        function formatTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) { // Less than 1 minute
+                return 'Just now';
+            } else if (diff < 3600000) { // Less than 1 hour
+                return Math.floor(diff / 60000) + 'm ago';
+            } else if (diff < 86400000) { // Less than 1 day
+                return Math.floor(diff / 3600000) + 'h ago';
+            } else if (diff < 604800000) { // Less than 1 week
+                return Math.floor(diff / 86400000) + 'd ago';
+            } else {
+                return date.toLocaleDateString();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopMessagePolling();
+            } else if (currentConversationId) {
+                startMessagePolling();
+            }
+        });
+
+        // Clean up when page unloads
+        window.addEventListener('beforeunload', function() {
+            stopMessagePolling();
+        });
+
+        // Authentication functions
+        function checkAuthentication() {
+            // Implement your authentication check here
+            // For example, check a cookie or local storage
+            const isLoggedIn = true; // Replace with actual check
+            if (isLoggedIn) {
+                document.getElementById('auth-buttons').style.display = 'none';
+                document.getElementById('user-buttons').style.display = 'flex';
+                document.getElementById('messages-nav').style.display = 'block';
+                document.getElementById('matches-nav').style.display = 'block';
+                document.getElementById('profile-nav').style.display = 'block';
+                document.getElementById('user-greeting').textContent = `Hi, ${getUserDisplayName()}!`;
+            } else {
+                document.getElementById('auth-buttons').style.display = 'flex';
+                document.getElementById('user-buttons').style.display = 'none';
+                document.getElementById('messages-nav').style.display = 'none';
+                document.getElementById('matches-nav').style.display = 'none';
+                document.getElementById('profile-nav').style.display = 'none';
+            }
+        }
+
+        function isUserLoggedIn() {
+            // Implement your check for user login status here
+            return true; // Replace with actual check
+        }
+
+        function getUserDisplayName() {
+            // Implement your logic to get the user's display name here
+            return 'User'; // Replace with actual user name
+        }
+
+        function logout() {
+            // Implement your logout logic here
+            window.location.href = 'login.html';
+        }
+
+        function startPolling() {
+            // Implement your polling logic here
+        }
+
+        function scheduleCall() {
+            // Implement your call scheduling logic here
+        }
+
+        function viewProfile() {
+            // Implement your profile viewing logic here
+            window.location.href = 'profile.html';
+        }
+    </script>
+</body>
+</html>
