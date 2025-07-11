@@ -209,10 +209,18 @@ $isLoggedIn = isset($_SESSION['user']); // Assume you store user data in $_SESSI
             <div class="cta-content">
                 <h2>Ready to Find Your Perfect Match?</h2>
                 <p>Join thousands of women in STEM who are already building meaningful mentorship connections.</p>
-                <button class="btn-primary btn-large" onclick="window.location.href='swipe.html'">
-                    <i class="fas fa-heart"></i>
-                    Start Your Journey
-                </button>
+               <?php if (!$isLoggedIn): ?>
+    <button class="btn-primary btn-large" onclick="window.location.href='signup.php'">
+        <i class="fas fa-heart"></i>
+        Start Your Journey
+    </button>
+<?php else: ?>
+    <button class="btn-primary btn-large" onclick="window.location.href='swipe.php'">
+        <i class="fas fa-heart"></i>
+        Start Your Journey
+    </button>
+<?php endif; ?>
+
             </div>
         </div>
     </section>
