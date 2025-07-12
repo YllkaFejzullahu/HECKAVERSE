@@ -706,4 +706,37 @@ function filterCards() {
   } else {
     showNotification("Showing all mentors")
   }
+  document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+    // Basic validation
+    const name = document.getElementById('edit-name').value;
+    if (!name || name.length < 2) {
+        alert('Please enter a valid name');
+        e.preventDefault();
+        return;
+    }
+    
+    // You can add more validation as needed
+});
+// In script.js
+document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload(); // Refresh to show changes
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
 }
