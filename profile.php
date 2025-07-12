@@ -206,75 +206,88 @@ $user_stmt->close();
         </div>
     </section>
 
-    <!-- Edit Profile Modal -->
-    <div class="modal" id="edit-profile-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Edit Profile</h2>
-                <button class="close-btn" onclick="closeEditModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-profile-form" action="update_profile.php" method="POST">
-                    <div class="form-group">
-                        <label for="edit-name">Full Name</label>
-                        <input type="text" id="edit-name" name="full_name" value="<?php echo htmlspecialchars($profile['full_name'] ?? ''); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-title">STEM Field</label>
-                        <input type="text" id="edit-title" name="stem_field" value="<?php echo htmlspecialchars($profile['stem_field'] ?? ''); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-location">Location</label>
-                        <input type="text" id="edit-location" name="location" value="<?php echo htmlspecialchars($profile['location'] ?? ''); ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Goals</label>
-                        <textarea id="edit-bio" name="goals" rows="4" required><?php echo htmlspecialchars($profile['goals'] ?? ''); ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-interests">Interests (comma separated)</label>
-                        <textarea id="edit-interests" name="interests" rows="3"><?php echo htmlspecialchars($profile['interests'] ?? ''); ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-communication">Communication Style</label>
-                        <select id="edit-communication" name="communication_style">
-                            <option value="">Select style</option>
-                            <option value="Friendly and Casual" <?php echo ($profile['communication_style'] ?? '') === 'Friendly and Casual' ? 'selected' : ''; ?>>Friendly & Casual</option>
-                            <option value="Professional and Formal" <?php echo ($profile['communication_style'] ?? '') === 'Professional and Formal' ? 'selected' : ''; ?>>Professional & Formal</option>
-                            <option value="Supportive and Empathetic" <?php echo ($profile['communication_style'] ?? '') === 'Supportive and Empathetic' ? 'selected' : ''; ?>>Supportive & Empathetic</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-personality">Personality Type</label>
-                        <select id="edit-personality" name="personality_traits">
-                            <option value="">Select type</option>
-                            <option value="INTJ" <?php echo ($profile['personality_traits'] ?? '') === 'INTJ' ? 'selected' : ''; ?>>INTJ - The Architect</option>
-                            <option value="INTP" <?php echo ($profile['personality_traits'] ?? '') === 'INTP' ? 'selected' : ''; ?>>INTP - The Logician</option>
-                            <!-- Add other MBTI options as needed -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-availability">Availability</label>
-                        <input type="text" id="edit-availability" name="availability" value="<?php echo htmlspecialchars($profile['availability'] ?? ''); ?>">
-                    </div>
-                    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                </form>
-            </div>
-            <form id="edit-profile-form" action="update_profile.php" method="POST">
-    <!-- your form fields -->
-    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-
-    <div class="modal-footer">
-        <button class="btn-secondary" type="button" onclick="closeEditModal()">Cancel</button>
-        <button class="btn-primary" type="submit">Save Changes</button>
-    </div>
-</form>
-
+<!-- Edit Profile Modal -->
+<div class="modal" id="edit-profile-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Profile</h2>
+            <button class="close-btn" onclick="closeEditModal()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
+        <form id="edit-profile-form" action="update_profile.php" method="POST">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" name="full_name" value="<?php echo htmlspecialchars($profile['full_name'] ?? ''); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-title">STEM Field</label>
+                    <input type="text" id="edit-title" name="stem_field" value="<?php echo htmlspecialchars($profile['stem_field'] ?? ''); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-location">Location</label>
+                    <input type="text" id="edit-location" name="location" value="<?php echo htmlspecialchars($profile['location'] ?? ''); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-bio">Goals</label>
+                    <textarea id="edit-bio" name="goals" rows="4" required><?php echo htmlspecialchars($profile['goals'] ?? ''); ?></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-interests">Interests (comma separated)</label>
+                    <textarea id="edit-interests" name="interests" rows="3"><?php echo htmlspecialchars($profile['interests'] ?? ''); ?></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-communication">Communication Style</label>
+                    <select id="edit-communication" name="communication_style">
+                        <option value="">Select style</option>
+                        <option value="Friendly and Casual" <?php echo ($profile['communication_style'] ?? '') === 'Friendly and Casual' ? 'selected' : ''; ?>>Friendly & Casual</option>
+                        <option value="Professional and Formal" <?php echo ($profile['communication_style'] ?? '') === 'Professional and Formal' ? 'selected' : ''; ?>>Professional & Formal</option>
+                        <option value="Supportive and Empathetic" <?php echo ($profile['communication_style'] ?? '') === 'Supportive and Empathetic' ? 'selected' : ''; ?>>Supportive & Empathetic</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-personality">Personality Type</label>
+                    <select id="edit-personality" name="personality_traits">
+                        <option value="">Select type</option>
+                        <option value="INTJ" <?php echo ($profile['personality_traits'] ?? '') === 'INTJ' ? 'selected' : ''; ?>>INTJ - The Architect</option>
+                        <option value="INTP" <?php echo ($profile['personality_traits'] ?? '') === 'INTP' ? 'selected' : ''; ?>>INTP - The Logician</option>
+                        <option value="ENTJ" <?php echo ($profile['personality_traits'] ?? '') === 'ENTJ' ? 'selected' : ''; ?>>ENTJ - The Commander</option>
+                        <option value="ENTP" <?php echo ($profile['personality_traits'] ?? '') === 'ENTP' ? 'selected' : ''; ?>>ENTP - The Debater</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-availability">Availability</label>
+                    <input type="text" id="edit-availability" name="availability" value="<?php echo htmlspecialchars($profile['availability'] ?? ''); ?>">
+                </div>
+                
+                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" type="button" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-primary" type="submit">Save Changes</button>
+            </div>
+        </form>
     </div>
-
+</div>
     <script src="script.js"></script>
+    <?php if (isset($_SESSION['success_message'])): ?>
+    <div class="alert alert-success">
+        <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error_message'])): ?>
+    <div class="alert alert-danger">
+        <?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
+    </div>
+<?php endif; ?>
 </body>
 </html>
