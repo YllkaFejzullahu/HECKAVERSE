@@ -59,9 +59,12 @@ $user_stmt->close();
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
-                <a href="index.php" class="nav-link">Home</a>
                 <a href="swipe.php" class="nav-link">Find Matches</a>
-                <a href="matches.php" class="nav-link">My Matches</a>
+                <a href="matches.html" class="nav-link">My Matches</a>
+                <button class="btn-secondary" onclick="window.location.href='logout.php'">
+                <i class="fas fa-sign-out-alt"></i>
+                Log Out
+            </button>
             </div>
         </div>
     </nav>

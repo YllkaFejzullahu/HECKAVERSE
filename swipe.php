@@ -17,8 +17,7 @@
                 <span>HerMatchUp</span>
             </div>
             <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="profile.html" class="nav-link">Profile</a>
+                <a href="profile.php" class="nav-link">Profile</a>
                 <a href="matches.html" class="nav-link">Matches</a>
             </div>
             <div class="nav-buttons">
@@ -26,6 +25,10 @@
                     <i class="fas fa-users"></i>
                     My Matches
                 </button>
+                <button class="btn-secondary" onclick="window.location.href='logout.php'">
+                <i class="fas fa-sign-out-alt"></i>
+                Log Out
+            </button>
             </div>
         </div>
     </nav>
